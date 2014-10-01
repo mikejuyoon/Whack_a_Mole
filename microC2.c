@@ -111,7 +111,7 @@ void birthMoleTick(){
 				timeCnt = 0;
 			}
 			else
-			currState1 = init1;
+				currState1 = init1;
 			break;
 		case birthWait:
 			if(!play){
@@ -119,15 +119,17 @@ void birthMoleTick(){
 				PORTB = 0;
 			}
 			else if(birthTime == timeCnt)
-			currState1 = newMole;
+				currState1 = newMole;
 			else
-			currState1 = birthWait;
+				currState1 = birthWait;
 			break;
 		case newMole:
 			currState1 = birthWait;
 			birthTime = (rand()%80)+30; // random time of birth
 			timeCnt = 0;
 			break;
+		default:
+			currState1 = init1;
 	}
 	switch(currState1){
 		case init1:
@@ -138,16 +140,19 @@ void birthMoleTick(){
 			}
 			break;
 		case birthWait:
-		timeCnt++;
-		PORTB = aliveMoles;
-		break;
+			timeCnt++;
+			PORTB = aliveMoles;
+			break;
 		case newMole:
-		moleNum = rand()%8;
-		if(!GetBit(aliveMoles,moleNum)){
-			aliveMoles = SetBit(aliveMoles, moleNum, 1);
-			moleLife[moleNum] = 120; //MOLE LIFETIME
-		}
-		break;
+			moleNum = rand()%8;
+			if(!GetBit(aliveMoles,moleNum)){
+				aliveMoles = SetBit(aliveMoles, moleNum, 1);
+				moleLife[moleNum] = 120; //MOLE LIFETIME
+			}
+			break;
+		default:
+			currState1 = init1;
+			break;
 	}
 }
 
@@ -180,30 +185,29 @@ void killMoleTick(){
 				currState2 = killWait;
 			break;
 		case decreMole:
-		currState2 = killWait;
-		break;
+			currState2 = killWait;
+			break;
 	}
 	switch(currState2){
 		case init:
-		currScore = 0;
+			currScore = 0;
 			break;
 		case killWait:
-		for(i=0 ; i<8 ; i++){
-			if(moleLife[i] == 0)
-			aliveMoles = SetBit(aliveMoles, i , 0);
-			else if(moleLife[i] > 0)
-			moleLife[i]--;
-		}
-		break;
+			for(i=0 ; i<8 ; i++){
+				if(moleLife[i] == 0)
+					aliveMoles = SetBit(aliveMoles, i , 0);
+				else if(moleLife[i] > 0)
+					moleLife[i]--;
+			}
+			break;
 		case decreMole:
-		//currScore++;
-		for(i=0 ; i<8 ; i++){
-			if(moleLife[i] == 0 && GetBit(aliveMoles,i))
-			aliveMoles = SetBit(aliveMoles, i , 0);
-			else if(moleLife[i] > 0)
-			moleLife[i]--;
-		}
-		break;
+			for(i=0 ; i<8 ; i++){
+				if(moleLife[i] == 0 && GetBit(aliveMoles,i))
+				aliveMoles = SetBit(aliveMoles, i , 0);
+				else if(moleLife[i] > 0)
+				moleLife[i]--;
+			}
+			break;
 	}
 
 }

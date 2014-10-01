@@ -26,8 +26,6 @@ unsigned char currScore;
 unsigned char tempMessage;
 unsigned char currHighScore;
 
-
-
 // ----------------- Tick Function States ----------------
 enum gameStatuses{intro, highscore, resetHighScore, play, gameOver} gameStatus;
 enum soundStatuses{none, normal, special, bad} soundStatus;
@@ -37,7 +35,6 @@ void lcdTick();
 void mainTick();
 void playSound();
 void displayIntro();
-
 
 int main(void)
 {
@@ -72,9 +69,7 @@ int main(void)
 		while(!TimerFlag);
 		TimerFlag = 0;
 	}
-
 }
-
 
 unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
 	return (b ? x | (0x01 << k) : x & ~(0x01 << k));
@@ -186,7 +181,6 @@ void mainTick(){
 			playTime++;
 			break;
 	}
-
 }
 
 void lcdTick(){
@@ -230,10 +224,10 @@ void lcdTick(){
 			else
 			LCD_WriteData(currScore + '0');
 			break;
-			
 	}
 	LCD_Cursor(40);
 }
+
 void updateScore(unsigned char newScore){
 	if(newScore == currScore+1)
 		soundStatus = normal;
@@ -287,47 +281,50 @@ void playSound(){
 				}
 				break;
 			case special:
-			if(currFreq == 0){
-				currFreq = 261.63;
-				set_PWM(currFreq);
-			}
-			else if(currFreq == 261.63){
-				currFreq = 293.66;
-				set_PWM(currFreq);
-			}
-			else if(currFreq == 293.66){
-				currFreq = 329.63;
-				set_PWM(currFreq);
-			}
-			else if(currFreq == 329.63){
-				currFreq = 0;
-				set_PWM(currFreq);
-				soundStatus = none;
-			}
-			break;
+				if(currFreq == 0){
+					currFreq = 261.63;
+					set_PWM(currFreq);
+				}
+				else if(currFreq == 261.63){
+					currFreq = 293.66;
+					set_PWM(currFreq);
+				}
+				else if(currFreq == 293.66){
+					currFreq = 329.63;
+					set_PWM(currFreq);
+				}
+				else if(currFreq == 329.63){
+					currFreq = 0;
+					set_PWM(currFreq);
+					soundStatus = none;
+				}
+				break;
 			case bad:
-			if(currFreq == 0){
-				currFreq = 261.63;
-				set_PWM(currFreq);
-			}
-			else if(currFreq == 261.63){
-				currFreq = 293.66;
-				set_PWM(currFreq);
-			}
-			else if(currFreq == 293.66){
-				currFreq = 329.63;
-				set_PWM(currFreq);
-			}
-			else if(currFreq == 329.63){
-				currFreq = 0;
-				set_PWM(currFreq);
-				soundStatus = none;
-			}
-			break;
+				if(currFreq == 0){
+					currFreq = 261.63;
+					set_PWM(currFreq);
+				}
+				else if(currFreq == 261.63){
+					currFreq = 293.66;
+					set_PWM(currFreq);
+				}
+				else if(currFreq == 293.66){
+					currFreq = 329.63;
+					set_PWM(currFreq);
+				}
+				else if(currFreq == 329.63){
+					currFreq = 0;
+					set_PWM(currFreq);
+					soundStatus = none;
+				}
+				break;
 		}
 	}
 }
 
+
+//==== Functions to setup the LCD Display ====
+//====		Must be hardcoded			=====
 void setCustomCharacters(){
 	LCD_WriteCommand(0x40);
 
